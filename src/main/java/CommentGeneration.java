@@ -1,3 +1,4 @@
+import util.CoreNLP;
 import util.NLPUtil;
 
 import java.util.ArrayList;
@@ -7,7 +8,20 @@ public class CommentGeneration {
     public static String generate(List<String>methodSplitResult,List<Concept>concepts){
         StringBuilder comment = new StringBuilder("");
         StringBuilder supplementary = new StringBuilder("");
+        List<String> Verb = new ArrayList<>();
+
+        for(String w:methodSplitResult){
+            if(CoreNLP.getPos(w).startsWith("V")){
+                Verb.add(w);
+            }
+        }
+        for(String v:Verb){
+            comment.append(v);
+            comment.append(" ");
+        }
+
         for(String s:methodSplitResult){
+            if(Verb.contains(s))continue;
             boolean isConcept = false;
             for(Concept c:concepts){
                 if(c.name.equals(s)){
